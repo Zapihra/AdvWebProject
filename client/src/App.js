@@ -1,7 +1,9 @@
 import './App.css';
-import AddBook from "./components/AddBook"
+
 import ErrorPage from './components/ErrorPage';
 import BookPage from './components/BookPage';
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 
@@ -11,11 +13,11 @@ function App() {
     <>
     <Router>
     <div>   
-    <h1>books</h1>
       <Routes>
         <Route path='*' element={<ErrorPage/>}/>
-        <Route path='/' element={<AddBook/>} />
+        <Route path='/login' element={<LoginPage/>}/>
         <Route path='/book/:id' element={<BookPage/>}/>
+        <Route path='/register' element={<RegisterPage/>}/>
       </Routes>
     </div>
     </Router>

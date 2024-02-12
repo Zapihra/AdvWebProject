@@ -15,38 +15,38 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/api/book', function(req,res) {
-  var body = req.body
-  console.log(body)
+// router.post('/api/book', function(req,res) {
+//   var body = req.body
+//   console.log(body)
 
-  const book = new Book({
-    name: body.name,
-    author: body.author,
-    pages: body.pages
-  })
-  book.save()
+//   const book = new Book({
+//     name: body.name,
+//     author: body.author,
+//     pages: body.pages
+//   })
+//   book.save()
 
-  res.send("ok")
-})
+//   res.send("ok")
+// })
 
-router.get('/api/getBook/:id', function (req,res) {
+// router.get('/api/getBook/:id', function (req,res) {
 
-  var id = req.params.id
+//   var id = req.params.id
 
-  Book.findOne({name: id}, (err, book) => {
-    if(!book) {
-      return res.sendStatus(404)
-    }
-    else {
-      return res.json({
-        "name": book.name,
-        "author": book.author,
-        "pages": book.pages
-      }).status(200)
-    }
+//   Book.findOne({name: id}, (err, book) => {
+//     if(!book) {
+//       return res.sendStatus(404)
+//     }
+//     else {
+//       return res.json({
+//         "name": book.name,
+//         "author": book.author,
+//         "pages": book.pages
+//       }).status(200)
+//     }
 
 
-  })
-})
+//   })
+// })
 
-module.exports = router;
+// module.exports = router;

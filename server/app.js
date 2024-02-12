@@ -7,6 +7,7 @@ var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var apiRouter = require('./routes/api')
 
 var app = express();
 
@@ -25,6 +26,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error"))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', apiRouter)
 
 if (process.env.NODE_ENV === "produnction") {
     app.use(express.static(path.resolve("..", "client", "build")));
