@@ -3,19 +3,30 @@ const LoginPage = () => {
     const submitForm = (event) => {
           
       var email = event.target.email.value
-      var password = event.target.password.value
+      var passw = event.target.password.value
       
       //console.log(name, author, pages)
-      //fetch("/api/book", {
-      //  method: "POST",
-      //  headers: {
-      //  "Content-Type": "application/json"},
-      //  body: JSON.stringify({
-      //    "name": name,
-      //    "author": author,
-      //    "pages": pages
-      //  })
-      //})  
+      fetch('/api/user/login', {
+            method: 'post',
+            body: JSON.stringify({
+                "email": email,
+                "password": passw
+            }),
+            headers: { 
+            'Content-Type': "application/json"} 
+        }).then(function (response) {return (response.json())})
+        .then(function(res) {
+            if(res.success === true) {
+                localStorage.setItem('auth_token', res.token)
+                console.log("success")
+                //window.location.replace('http://localhost:3000/')
+            }
+            else {
+                
+                var body = document.getElementById("body")
+                body.appendChild(document.createTextNode("Invalid credentials"))
+            }
+        })  
     }
   
       return (

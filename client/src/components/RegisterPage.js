@@ -5,19 +5,15 @@ const RegisterPage = () => {
     var email = event.target.email.value
     var password = event.target.password.value
     
-
-    
-    //console.log(name, author, pages)
-    //fetch("/api/book", {
-    //  method: "POST",
-    //  headers: {
-    //  "Content-Type": "application/json"},
-    //  body: JSON.stringify({
-    //    "name": name,
-    //    "author": author,
-    //    "pages": pages
-    //  })
-    //})  
+    fetch("/api/user/register", {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json"},
+      body: JSON.stringify({
+        "email": email,
+        "password": password
+      })
+    })  
   }
 
     return (
