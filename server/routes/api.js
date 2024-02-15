@@ -90,4 +90,18 @@ router.post('/user/login', function(req, res) {
     })
   })
 
+router.get('/user/:id', function(req,res) {
+  var id = req.params.id
+
+  User.findOne({name: id}, (err, user) => {
+    if(!user) {
+      return res.sendStatus(404)
+    }
+    else {
+      return res.json({
+        "email": user.email
+      }).status(200)
+    }})
+})
+
 module.exports = router;

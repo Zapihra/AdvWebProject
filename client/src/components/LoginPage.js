@@ -4,8 +4,7 @@ const LoginPage = () => {
           
       var email = event.target.email.value
       var passw = event.target.password.value
-      
-      //console.log(name, author, pages)
+
       fetch('/api/user/login', {
             method: 'post',
             body: JSON.stringify({
@@ -22,7 +21,6 @@ const LoginPage = () => {
                 //window.location.replace('http://localhost:3000/')
             }
             else {
-                
                 var body = document.getElementById("body")
                 body.appendChild(document.createTextNode("Invalid credentials"))
             }
