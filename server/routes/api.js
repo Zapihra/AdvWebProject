@@ -2,6 +2,7 @@ require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+mongoose.set('strictQuery', true)
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
@@ -102,6 +103,10 @@ router.get('/user/:id', function(req,res) {
         "email": user.email
       }).status(200)
     }})
+})
+
+router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
+  res.json({"email": req.user.email})
 })
 
 module.exports = router;

@@ -17,12 +17,12 @@ const LoginPage = () => {
         .then(function(res) {
             if(res.success === true) {
                 localStorage.setItem('auth_token', res.token)
-                console.log("success")
+                //console.log("success")
                 //window.location.replace('http://localhost:3000/')
             }
             else {
-                var body = document.getElementById("body")
-                body.appendChild(document.createTextNode("Invalid credentials"))
+                //var body = document.getElementById("body")
+                //body.appendChild(document.createTextNode("Invalid credentials"))
             }
         })  
     }

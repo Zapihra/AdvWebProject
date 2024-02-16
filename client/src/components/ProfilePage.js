@@ -34,7 +34,6 @@ const ProfilePage = () => {
         <div>
             <h3>
                 {data.email} <br/>
-                
             </h3>
         </div></>)
     }
