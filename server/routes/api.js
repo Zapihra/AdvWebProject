@@ -15,7 +15,17 @@ const usersSchema = new mongoose.Schema({
   password: {type: String},
 });
 
+const publicSchema = new mongoose.Schema({
+  id: {type: Object},
+  name: {type: String},
+  info: {type: String},
+  neutral: {type: Array},
+  liked: {type: Array},
+  dislike: {type: Array}
+});
+
 const User = mongoose.model('Users', usersSchema)
+const Public = mongoose.model('Public', publicSchema)
 
 var opts = {
     secretOrKey: process.env.SECRET,
@@ -107,6 +117,39 @@ router.get('/user/:id', function(req,res) {
 
 router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
   res.json({"email": req.user.email})
+})
+
+router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
+  var body = req.body
+  var pid = req.user._id
+  console.log(body, pid)
+  Public.findOne({id: pid}, (err, user) => {
+    if(!user) { 
+      // creating a new user and adding it to others neutral array
+
+      // help from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
+      // and here https://stackoverflow.com/questions/73595221/mongoose-updatemany-not-updating-array
+      Public.updateMany({},{$push: {neutral: body.name}}, {returnDocument: true}).exec()
+    
+      //adding other users to the new user
+      Public.find({}, function(err, users) {  
+        var userMap = [];
+        users.forEach(user => {
+          userMap.push(user.name)
+        });
+      
+      const us = new Public({
+        id: pid,
+        name: body.name,
+        info: body.info,
+        liked: [],
+        dislike: [],
+        neutral: userMap
+      })
+      us.save()
+    })
+    }
+  })
 })
 
 module.exports = router;

@@ -3,6 +3,7 @@ const InfoPage = () => {
     //console.log(localStorage.getItem('auth_token'))
     //fetch('api/private')
 
+    //some reason proxy doesn't work here
     fetch('http://localhost:1234/api/private', { 
         method: 'GET',
         headers: {
@@ -16,15 +17,6 @@ const InfoPage = () => {
         }).then((res) => {
             console.log(res)
         })
-    //.then(function (res){
-        //console.log(res.statusText)
-        //if (res.statusText === 'Unauthorized'){
-        //    window.location.replace("http://localhost:3000/login")
-        //}
-        //else{
-        //    return console.log(res.status)
-        //}
-    //})
 
     const submitForm = (event) => {
        //console.log("hello")
@@ -33,16 +25,17 @@ const InfoPage = () => {
        var info = event.target.info.value
     
     //    console.log(name, info)
-        //fetch("/api/book", {
-        //  method: "POST",
-        //  headers: {
-        //  "Content-Type": "application/json"},
-        //  body: JSON.stringify({
-        //    "name": name,
-        //    "author": author,
-        //    "pages": pages
-        //  })
-        //})  
+        fetch("/api/public", {
+          method: "POST",
+          headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'bearer ' + localStorage.getItem('auth_token')
+          },
+          body: JSON.stringify({
+            "name": name,
+            "info": info
+          })
+        })  
     }
 
     return(
