@@ -5,9 +5,8 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var cors = require('cors')
 
-
-var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api')
+var chatRouter = require('./routes/chat')
 
 var app = express();
 
@@ -25,8 +24,8 @@ db.on("error", console.error.bind(console, "MongoDB connection error"))
 
 
 app.use(cors())
-//app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/api', apiRouter)
+
+app.use('/api', apiRouter);
+app.use('/chat', chatRouter)
 
 module.exports = app;

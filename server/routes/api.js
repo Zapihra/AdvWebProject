@@ -203,11 +203,33 @@ router.get('/neutral', passport.authenticate('jwt', {session: false}), (req,res)
     
     //making the original list
     var original = public.neutral
-    
-    Public.findOne({name: original[0]}, (err, person) => {
-      res.json({"name": person.name, "info": person.info})
-    })    
+    if (original.length === 0) {
+      res.json({res: 0})
+      
+    }
+    else {
+      Public.findOne({name: original[0]}, (err, person) => {
+        res.json({"name": person.name, "info": person.info})
+      })   
+    } 
   })
+})
+
+//updating if they have liked someone
+router.put('/opinion/:value', passport.authenticate('jwt', {session: false}), (req, res)=> {
+  var value = req.params.value
+  var name = req.body.name
+  
+  Public.findOneAndUpdate({id: req.user._id}, {$pull: {neutral: name}}, (err,result)=>{})
+
+  if(value === "liked") {
+    Public.findOneAndUpdate({id: req.user._id}, {$push: {liked: name}}, (err,result)=>{})
+  }
+  else {
+    Public.findOneAndUpdate({id: req.user._id}, {$push: {dislike: name}},(err,result)=>{})
+  }
+  res.sendStatus(200)
+  
 })
 
 

@@ -14,22 +14,45 @@ const ClonePage = () => {
             return res.json()})
         .then((res) => {
             
-            if (res !== undefined) {
+            if (res.res !== 0) {
                 setData(res)
             }
             else {
                 setData(0)
             }
+            return
         })
 
     }, []);
 
     const liked = () => {
-        console.log("liked")
+        fetch('/api/opinion/liked', {
+            method: 'PUT',
+            headers: {
+            'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
+            'Content-Type': "application/json"
+            },
+            body: JSON.stringify({name: data.name})
+        }).then((res)=> {
+            if(res.status === 200 || res.status === 304) {
+                window.location.reload()
+            }
+        })
     }
 
     const disliked = () => {
-        console.log("disliked")
+        fetch('/api/opinion/dislike', {
+            method: 'PUT',
+            headers: {
+            'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
+            'Content-Type': "application/json"
+            },
+            body: JSON.stringify({name: data.name})
+        }).then((res)=> {
+            if(res.status === 200 || res.status === 304) {
+                window.location.reload()
+            }
+        })
     }
 
     if (data !== 0) {
