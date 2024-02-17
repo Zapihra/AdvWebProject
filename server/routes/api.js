@@ -122,7 +122,9 @@ router.get('/private', passport.authenticate('jwt', {session: false}), (req,res)
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
   var body = req.body
   var pid = req.user._id
-  console.log(body, pid)
+  //console.log(body, pid)
+
+
   Public.findOne({id: pid}, (err, user) => {
     if(!user) { 
       // creating a new user and adding it to others neutral array
@@ -147,8 +149,12 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
         neutral: userMap
       })
       us.save()
+      res.json({res: "ok"})
     })
     }
+    else {
+      console.log(user)
+      res.json({"res": "user found", user: user.name})}
   })
 })
 

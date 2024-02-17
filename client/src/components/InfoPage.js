@@ -13,9 +13,6 @@ const InfoPage = () => {
             if (res.statusText === 'Unauthorized'){
                 window.location.replace("http://localhost:3000/login")
             }
-            return res.json()
-        }).then((res) => {
-            console.log(res)
         })
 
     const submitForm = (event) => {
@@ -35,7 +32,16 @@ const InfoPage = () => {
             "name": name,
             "info": info
           })
-        })  
+        }).then((res) => {return res.json()
+        }).then((res) => {
+            if (res.res == 'user found') {
+                var name = res.user
+                window.location.replace(`http://localhost:3000/profile/${name}`)
+            }
+            else if (res.res == 'ok') {
+                window.location.replace("http://localhost:3000/tclone")
+            }
+        })
     }
 
     return(
