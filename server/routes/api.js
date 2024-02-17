@@ -135,8 +135,6 @@ router.get('/private', passport.authenticate('jwt', {session: false}), (req,res)
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
   var body = req.body
   var pid = req.user._id
-  //console.log(body, pid)
-
 
   Public.findOne({id: pid}, (err, user) => {
     if(!user) { 
@@ -167,9 +165,37 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
     })
     }
     else {
-      console.log(user)
       res.json({"res": "user found", user: user.name})}
   })
 })
+
+router.post('/update/:id', passport.authenticate('jwt', {session: false}),
+//body("password").optional().not().isLowercase().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/, "i"),
+//body("email").optional().trim().isEmail(),
+(req,res) => {
+  var id = req.params.id
+
+  const errors = validationResult(req);  
+    if(!errors.isEmpty()){
+        return res.status(400).json({"errors": errors.array()})
+    }
+
+  if(id === "password") {
+    var salt = bcrypt.genSaltSync(10)
+    var hash = bcrypt.hashSync(req.body.password, salt)
+    
+    User.updateOne({_id:req.user._id}, {password:hash}, (err,result)=>{})
+    res.sendStatus(200)
+  }
+  else if (id === "info") {
+    Public.updateOne({id:req.user._id}, {info:req.body.info}, (err,result)=>{})
+    res.sendStatus(200)
+  }
+  else if (id === "email") {
+    User.updateOne({_id:req.user._id}, {email:req.body.email}, (err,result)=>{})
+    res.sendStatus(200)
+  }
+})
+
 
 module.exports = router;

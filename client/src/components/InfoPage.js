@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 const InfoPage = () => {
 
     //some reason proxy doesn't work here
@@ -31,11 +30,11 @@ const InfoPage = () => {
         }).then((res) => {return res.json()
         }).then((res) => { 
             //redirecting based on if crator was a new user or old one
-            if (res.res == 'user found') {
+            if (res.res === 'user found') {
                 var name = res.user
                 window.location.replace(`http://localhost:3000/profile/${name}`)
             }
-            else if (res.res == 'ok') {
+            else if (res.res === 'ok') {
                 window.location.replace("http://localhost:3000/tclone")
             }
         })
