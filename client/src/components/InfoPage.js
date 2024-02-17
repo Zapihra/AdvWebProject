@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 const InfoPage = () => {
-    //console.log(localStorage.getItem('auth_token'))
-    //fetch('api/private')
 
     //some reason proxy doesn't work here
     fetch('http://localhost:1234/api/private', { 
@@ -16,12 +14,10 @@ const InfoPage = () => {
         })
 
     const submitForm = (event) => {
-       //console.log("hello")
-        
+       
        var name = event.target.name.value
        var info = event.target.info.value
     
-    //    console.log(name, info)
         fetch("/api/public", {
           method: "POST",
           headers: {
@@ -33,7 +29,8 @@ const InfoPage = () => {
             "info": info
           })
         }).then((res) => {return res.json()
-        }).then((res) => {
+        }).then((res) => { 
+            //redirecting based on if crator was a new user or old one
             if (res.res == 'user found') {
                 var name = res.user
                 window.location.replace(`http://localhost:3000/profile/${name}`)

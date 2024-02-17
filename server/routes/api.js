@@ -101,22 +101,35 @@ router.post('/user/login', function(req, res) {
     })
   })
 
-router.get('/user/:id', function(req,res) {
+router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
   var id = req.params.id
-
-  User.findOne({name: id}, (err, user) => {
-    if(!user) {
-      return res.sendStatus(404)
+  
+  //based on viewed site it returns its own profile or others
+  Public.findOne({name:id}, (err, public) => {
+    
+    if (String(public.id) === String(req.user._id)) { 
+      //own profile
+     
+      return res.json({
+        "email": req.user.email,
+        "name": public.name,
+        "info": public.info
+      }).status(200)
     }
     else {
+      //other profile
+      
       return res.json({
-        "email": user.email
-      }).status(200)
-    }})
+        "name": public.name,
+        "info": public.info
+      })
+    }
+  })
+
 })
 
 router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
-  res.json({"email": req.user.email})
+  res.sendStatus(200)
 })
 
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
@@ -131,6 +144,7 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
 
       // help from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
       // and here https://stackoverflow.com/questions/73595221/mongoose-updatemany-not-updating-array
+      // adding new user to others neutral array
       Public.updateMany({},{$push: {neutral: body.name}}, {returnDocument: true}).exec()
     
       //adding other users to the new user
