@@ -37,8 +37,7 @@ const ProfilePage = () => {
         },
         body: JSON.stringify({
             "email": event.target.email.value
-        })}).then(res => {return res.json()})
-        .then((res) => {console.log(res)})
+        })})
     }
 
     const sendInfo = (event) => {
@@ -67,7 +66,6 @@ const ProfilePage = () => {
         })})
     }
 
-        
     if (data === 0) {
         return(<><ErrorPage/></>)
     }

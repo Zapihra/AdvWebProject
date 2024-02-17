@@ -197,5 +197,18 @@ router.post('/update/:id', passport.authenticate('jwt', {session: false}),
   }
 })
 
+router.get('/neutral', passport.authenticate('jwt', {session: false}), (req,res) => {
+  
+  Public.findOne({id: req.user._id}, (err, public) =>{
+    
+    //making the original list
+    var original = public.neutral
+    
+    Public.findOne({name: original[0]}, (err, person) => {
+      res.json({"name": person.name, "info": person.info})
+    })    
+  })
+})
+
 
 module.exports = router;
