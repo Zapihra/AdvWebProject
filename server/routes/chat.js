@@ -12,7 +12,7 @@ var User = require('../schemas/userSchema.js');
 const chatChema = new mongoose.Schema({
     name1: {type: String},
     name2: {type: String},
-    chat: {type: Array}
+    chat: {type: Array, index: {unique: true}},
 })
   
 const Chats = mongoose.model('Chats', chatChema)
@@ -56,24 +56,57 @@ router.post('/check', passport.authenticate('jwt', {session: false}), (req, res)
     res.sendStatus(200)
 })
 
-router.get('/matched', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.get('/matched/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     var id = req.user._id
+    var toName = req.params.id
+    
+        Public.findOne({id: id}, (err, person) => {
+            Chats.find({$or: [{name1: person.name}, {name2: person.name}]}, (err, chats) => {
+                var id = 0
+                var list = []
+                chats.forEach(el => {
+                    if (el.name1 === person.name) {
+                        list.push([id, el.name2])
+                    }
+                    else {
+                        list.push([id, el.name1])
+                    }
+                    id = id+1
+                });
 
-    Public.findOne({id: id}, (err, person) => {
-        Chats.find({$or: [{name1: person.name}, {name2: person.name}]}, (err, chats) => {
-            var id = 0
-            var list = []
-            chats.forEach(el => {
-                if (el.name1 === person.name) {
-                    list.push([id, el.name2])
+                if(toName === "main") {
+                    res.send(JSON.stringify(list))
                 }
                 else {
-                    list.push([id, el.name1])
+                    chats.forEach(el => {
+                        if (el.name1 === toName || el.name2 == toName) {                        
+                            res.send(JSON.stringify([el.chat, list]))
+                        }
+                    })
                 }
-                id = id+1
-            });
-            res.send(JSON.stringify(list))
+                
+                
+
+            })
         })
+
     })
+    //console.log(id, toName)
+
+router.post('/add', passport.authenticate('jwt', {session: false}), (req,res) => {
+    var id = req.user._id
+    var toName = req.body.name
+    var msg = req.body.msg
+
+    Public.findOne({id: id}, (err, person) => {
+        Chats.findOneAndUpdate({
+            $or: [{name1: person.name, name2: toName}, {name1: toName, name2: person.name}]},
+            {$push: {chat: [person.name, msg]}},
+            (err, chat) => {
+            res.sendStatus(200)
+        })
+    });
 })
+    
+
 module.exports = router;

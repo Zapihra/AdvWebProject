@@ -11,6 +11,7 @@ https://codesandbox.io/p/sandbox/fixed-sidebar-oenio?file=%2Fsrc%2Fstyles.css%3A
 .sidebar{
     flex: 100px 50px 0;
     height: 100vh;
+    background-color: antiquewhite;
 }
 
 .main {
