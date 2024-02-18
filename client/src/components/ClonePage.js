@@ -38,6 +38,16 @@ const ClonePage = () => {
                 window.location.reload()
             }
         })
+
+        fetch('/chat/check', {
+            method: 'POST', 
+            headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({name: data.name})
+        })
+        
     }
 
     const disliked = () => {

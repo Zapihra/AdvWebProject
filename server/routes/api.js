@@ -9,23 +9,8 @@ var passport = require('passport');
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var { body, validationResult } = require('express-validator');
-
-const usersSchema = new mongoose.Schema({
-  email: {type: String},
-  password: {type: String},
-});
-
-const publicSchema = new mongoose.Schema({
-  id: {type: Object},
-  name: {type: String},
-  info: {type: String},
-  neutral: {type: Array},
-  liked: {type: Array},
-  dislike: {type: Array}
-});
-
-const User = mongoose.model('Users', usersSchema)
-const Public = mongoose.model('Public', publicSchema)
+var Public = require('../schemas/publicSchema.js');
+var User = require('../schemas/userSchema.js');
 
 var opts = {
     secretOrKey: process.env.SECRET,
