@@ -7,6 +7,7 @@ import ProfilePage from './components/ProfilePage';
 import ChatPage from './components/ChatPage';
 import TClonePage from './components/ClonePage';
 import InfoPage from './components/InfoPage';
+import ChatMailPage from './components/ChatMailPage';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/register' element={<RegisterPage/>}/>
         <Route path='/profile/:id' element={<ProfilePage/>}/>
         <Route path='/chats' element={<ChatPage/>}/>
+        <Route path='/chats/:id' element={<ChatMailPage/>}/>
         <Route path='/info' element={<InfoPage/>}/>
         <Route path='/tclone' element={<TClonePage/>}/>
       </Routes>

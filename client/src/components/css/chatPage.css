@@ -1,0 +1,20 @@
+/*help from 
+https://codesandbox.io/p/sandbox/fixed-sidebar-oenio?file=%2Fsrc%2Fstyles.css%3A1%2C1-6%2C2*/
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.sidebar{
+    flex: 100px 50px 0;
+    height: 100vh;
+}
+
+.main {
+    flex: 200px 100px 0;
+    height: 100vh;
+}
+
