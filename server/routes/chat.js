@@ -12,7 +12,7 @@ var User = require('../schemas/userSchema.js');
 const chatChema = new mongoose.Schema({
     name1: {type: String},
     name2: {type: String},
-    chat: {type: Array, index: {unique: true}},
+    chat: {type: Array}
 })
   
 const Chats = mongoose.model('Chats', chatChema)
@@ -43,11 +43,13 @@ router.post('/check', passport.authenticate('jwt', {session: false}), (req, res)
             
             var liked = person.liked
             if (liked.indexOf(user.name) > -1) {
+                
                 const chat = new Chats({
                     name1: user.name,
                     name2: person.name,
-                    chat: []
+                    chat: undefined
                 })
+                console.log("here2")
                 chat.save()
             }
         })
