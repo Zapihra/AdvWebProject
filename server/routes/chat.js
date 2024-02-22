@@ -40,7 +40,6 @@ router.post('/check', passport.authenticate('jwt', {session: false}), (req, res)
 
     Public.findOne({id: req.user._id}, (err, user) => {
         Public.findOne({name: name}, (err, person) => {
-            
             var liked = person.liked
             if (liked.indexOf(user.name) > -1) {
                 
@@ -49,7 +48,7 @@ router.post('/check', passport.authenticate('jwt', {session: false}), (req, res)
                     name2: person.name,
                     chat: undefined
                 })
-                console.log("here2")
+                //console.log("here2")
                 chat.save()
             }
         })

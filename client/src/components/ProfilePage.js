@@ -73,10 +73,10 @@ const ProfilePage = () => {
 
         return(<>
             <div>
-                <h3>
-                    {data.name} <br/>
-                    {data.info}
-                </h3>
+                <h3>{data.name}</h3>
+                <p>{data.info}</p>
+                    
+                
             </div></>)
     }
     else {
@@ -97,7 +97,7 @@ const ProfilePage = () => {
 
             <br/>
             <h4>Info</h4>
-            {data.info} <br/> 
+            <p id="infoData">{data.info}</p> <br/> 
             update info:   
             <form onSubmit={event => {
                 event.preventDefault()

@@ -13,6 +13,10 @@ const RegisterPage = () => {
         "email": email,
         "password": password
       })
+    }).then((res) => {
+      if(res.status === 200) {
+        window.location.replace('http://localhost:3000/login')
+      }
     })  
   }
 

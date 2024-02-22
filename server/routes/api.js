@@ -13,9 +13,9 @@ var Public = require('../schemas/publicSchema.js');
 var User = require('../schemas/userSchema.js');
 
 var opts = {
-    secretOrKey: process.env.SECRET,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-  }
+  secretOrKey: process.env.SECRET,
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+}
 
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
   User.findOne({email: jwt_payload.email}, function(err, user){
