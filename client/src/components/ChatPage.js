@@ -1,9 +1,10 @@
 import "./css/chatPage.css"
 import { useEffect, useState } from "react"
 import { useParams } from 'react-router-dom';
+import Pagination from "./Pagination";
 
 const ChatPage = () => {
-    let {id} = useParams();
+    let {id,page} = useParams();
     let [fetchedList, setFetchList] = useState();
     let [fetchedChat, setFetchChat] = useState("click a chat!");
 
@@ -57,7 +58,7 @@ const ChatPage = () => {
     }, [])
 
     const handleClick = (name) => {
-        window.location.replace(`http://localhost:3000/chats/${name}`)
+        window.location.replace(`http://localhost:3000/chats/${name}/${page}`)
     }
 
     const sendText = (e) => {
@@ -75,44 +76,48 @@ const ChatPage = () => {
     const reload = () => {
         window.location.reload()
     }
-    if (id === 'main') {
-        return(
-            <>
-            
-            <div className="container">
-                <div className="sidebar">
-                    {fetchedList}
+    
+    if(fetchedList) {
+        if (id === 'main') {
+            return(
+                <>
+                
+                <div className="container">
+                    <div className="sidebar">
+                    <Pagination list={fetchedList} page={page} />
+                    </div>
+                    <div className="main">
+                        <button onClick={() => reload()}>reload</button> <br/>
+                        {fetchedChat}
+                    </div>
                 </div>
-                <div className="main">
-                    <button onClick={() => reload()}>reload</button> <br/>
-                    {fetchedChat}
+                </>
+            )
+        }
+        else {
+            return(
+                <>
+                
+                <div className="container">
+                    <div className="sidebar">
+                        <Pagination list={fetchedList} page={page} />
+                    </div>
+                    <div className="main">
+                        <button onClick={() => reload()}>reload</button> <br/>
+                        {fetchedChat}
+                        <form onSubmit={(e) => {
+                            //e.preventDefault()
+                            sendText(e)
+                        }}>
+                            <textarea id="area"/> <br/>
+                            <input type="submit"/>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            </>
-        )
+                </>
+            )
+        }
     }
-    else {
-    return(
-        <>
-        
-        <div className="container">
-            <div className="sidebar">
-                {fetchedList}
-            </div>
-            <div className="main">
-                <button onClick={() => reload()}>reload</button> <br/>
-                {fetchedChat}
-                <form onSubmit={(e) => {
-                    //e.preventDefault()
-                    sendText(e)
-                }}>
-                    <textarea id="area"/> <br/>
-                    <input type="submit"/>
-                </form>
-            </div>
-        </div>
-        </>
-    )}
 }
 
 export default ChatPage;

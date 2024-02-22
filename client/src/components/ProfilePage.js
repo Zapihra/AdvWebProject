@@ -76,7 +76,6 @@ const ProfilePage = () => {
                 <h3>{data.name}</h3>
                 <p>{data.info}</p>
                     
-                
             </div></>)
     }
     else {

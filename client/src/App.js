@@ -22,7 +22,7 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
         <Route path='/profile/:id' element={<ProfilePage/>}/>
-        <Route path='/chats/:id' element={<ChatPage/>}/>
+        <Route path='/chats/:id/:page' element={<ChatPage/>}/>
         <Route path='/info' element={<InfoPage/>}/>
         <Route path='/tclone' element={<TClonePage/>}/>
       </Routes>
