@@ -115,7 +115,6 @@ describe('chat', () => {
     cy.get('input[id=password]').type("aa")
     cy.get('input[id=submit]').click()
     cy.wait(500)
-    Cypress.env('user2', cy.getLocalStorage("auth_token"))
 
     cy.visit('http://localhost:3000/tclone')
     cy.wait(500)
@@ -157,6 +156,18 @@ describe('chatting', () => {
 // test 9
 describe('admin', () => {
   it('admin should be able to delete user and their chats', () => {
+    var user = Cypress.env('user');
+    
+    cy.visit('http://localhost:3000/login')
+    cy.get('input[id=email]').type("admin@admin")
+    cy.get('input[id=password]').type("admin")
+    cy.get('input[id=submit]').click()
+    cy.wait(500)
+
+    cy.visit("http://localhost:3000/profile/" + user)
+    y.get("[id=info]").should("exist")
+    cy.get("[id=deleteUser]").should("exist").click()
+    cy.get('h1').should('contain', "404")
 
   })
 })
