@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import ErrorPage from './ErrorPage';
-import Admin from '../Admin';
+import Admin from './Admin';
 
 const ProfilePage = () => {
     

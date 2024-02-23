@@ -6,6 +6,7 @@ mongoose.set('strictQuery', true)
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
+require('../passport/passport.js') (passport)
 
 var { body, validationResult } = require('express-validator');
 var Public = require('../schemas/publicSchema.js');

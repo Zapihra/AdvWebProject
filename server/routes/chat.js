@@ -5,8 +5,9 @@ var mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 var passport = require('passport');
 var Public = require('../schemas/publicSchema.js')
-//var User = require('../schemas/userSchema.js');
 var Chats = require('../schemas/chatSchema.js')
+
+require('../passport/passport.js') (passport)
 
 router.post('/check', passport.authenticate('jwt', {session: false}), (req, res) => {
     

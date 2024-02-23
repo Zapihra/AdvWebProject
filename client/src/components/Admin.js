@@ -72,7 +72,7 @@ const Admin = (props) => {
             <br/>
             <h4>Info</h4>
             <p id="infoData">{data.info}</p> <br/> 
-            delete info:   
+            info:   
             <form onSubmit={event => {
                 event.preventDefault()
                 sendInfo(event)}}>
@@ -81,7 +81,7 @@ const Admin = (props) => {
             </form>
 
             delete info: <br/>  
-            <button id="deleteInfo" onClick={() => deleteInfo()}>Send</button>
+            <button id="deleteInfo" onClick={() => deleteInfo()}>Delete Info</button>
         </div></>)
     }
     else {
