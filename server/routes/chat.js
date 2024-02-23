@@ -8,15 +8,8 @@ var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var Public = require('../schemas/publicSchema.js')
 var User = require('../schemas/userSchema.js');
+var Chats = require('../schemas/chatSchema.js')
 
-const chatChema = new mongoose.Schema({
-    name1: {type: String},
-    name2: {type: String},
-    chat: {type: Array}
-})
-  
-const Chats = mongoose.model('Chats', chatChema)
-  
 var opts = {
     secretOrKey: process.env.SECRET,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()

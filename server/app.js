@@ -7,6 +7,7 @@ var cors = require('cors')
 
 var apiRouter = require('./routes/api')
 var chatRouter = require('./routes/chat')
+var adminRouter = require('./routes/admin')
 
 var app = express();
 
@@ -26,6 +27,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error"))
 app.use(cors())
 
 app.use('/api', apiRouter);
-app.use('/chat', chatRouter)
+app.use('/chat', chatRouter);
+app.use('/admin', adminRouter), 
 
 module.exports = app;

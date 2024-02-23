@@ -94,16 +94,28 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
     
     if (String(public.id) === String(req.user._id)) { 
       //own profile
-     
+      
       return res.json({
         "email": req.user.email,
         "name": public.name,
         "info": public.info
       }).status(200)
     }
+    else if (req.user.email === "admin@admin") {
+
+      User.findOne({_id: public.id}, (err, user) => {
+
+        return res.json({
+          "email": user.email,
+          "name": public.name,
+          "info": public.info,
+          "user": "admin"
+        }).status(200)
+      })
+
+    }
     else {
       //other profile
-      
       return res.json({
         "name": public.name,
         "info": public.info
