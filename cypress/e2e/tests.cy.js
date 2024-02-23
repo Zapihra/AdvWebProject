@@ -121,7 +121,8 @@ describe('chat', () => {
     cy.wait(500)
     cy.get("[id=like]").click()
 
-    cy.visit('http://localhost:3000/chats/main')
+    cy.visit('http://localhost:3000/chats/main/1')
+    cy.get('a:last').click()
     cy.get('h5:last').invoke('text').should('eq', Cypress.env('user'))
   })
 })
@@ -131,7 +132,7 @@ describe('chatting', () => {
   it('chats should show for the other user', () => {
     var user = Cypress.env('user')
     cy.restoreLocalStorage()
-    cy.visit('http://localhost:3000/chats/main')
+    cy.visit('http://localhost:3000/chats/main/1')
     cy.get('h5:last').click()
     cy.wait(500)
     cy.get("[id=area]").type("Hello")
@@ -145,7 +146,8 @@ describe('chatting', () => {
     cy.get('input[id=password]').type("aa")
     cy.get('input[id=submit]').click()
     cy.wait(500)
-    cy.visit('http://localhost:3000/chats/main')
+    cy.visit('http://localhost:3000/chats/main/1')
+    cy.get('a:last').click()
     cy.get('h5:last').click()
     cy.wait(500)
     cy.get("p:last").invoke('text').should('eq', user + ": Hello")
@@ -162,7 +164,19 @@ describe('admin', () => {
 // test 10
 describe('pager',() => {
   it('pager shoud be used for users that have more than 10 chats', () => {
+    cy.visit('http://localhost:3000/login')
+    cy.get('input[id=email]').type("aa@aa")
+    cy.get('input[id=password]').type("aa")
+    cy.get('input[id=submit]').click()
+    cy.wait(500)
+    cy.visit('http://localhost:3000/chats/main/1')
+    cy.get('[class=pagination]').should('exist')
+  })
 
+  it('pager should not be shown for user that have less than 10 chats', () => {
+    cy.restoreLocalStorage()
+    cy.visit('http://localhost:3000/chats/main/1')
+    cy.get('[class=pagination]').should('not.exist')
   })
 })
 

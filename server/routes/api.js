@@ -128,10 +128,10 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
       // help from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
       // and here https://stackoverflow.com/questions/73595221/mongoose-updatemany-not-updating-array
       // adding new user to others neutral array
-      Public.updateMany({},{$push: {neutral: body.name}}, {returnDocument: true}).exec()
+      Public.updateMany({update:true},{$push: {neutral: body.name}}, {returnDocument: true}).exec()
     
       //adding other users to the new user
-      Public.find({}, function(err, users) {  
+      Public.find({update:true}, function(err, users) {  
         var userMap = [];
         users.forEach(user => {
           userMap.push(user.name)
