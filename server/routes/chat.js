@@ -4,28 +4,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 var passport = require('passport');
-var JwtStrategy = require('passport-jwt').Strategy;
-var ExtractJwt = require('passport-jwt').ExtractJwt;
 var Public = require('../schemas/publicSchema.js')
-var User = require('../schemas/userSchema.js');
+//var User = require('../schemas/userSchema.js');
 var Chats = require('../schemas/chatSchema.js')
-
-var opts = {
-    secretOrKey: process.env.SECRET,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-}
-  
-passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findOne({email: jwt_payload.email}, function(err, user){
-      if (err) {
-        return done(err, false);
-      }
-      if (user) {
-        return done(null, user);
-      }
-      else {return done(null, false);}
-    })
-}));
 
 router.post('/check', passport.authenticate('jwt', {session: false}), (req, res) => {
     

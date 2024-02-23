@@ -6,29 +6,10 @@ mongoose.set('strictQuery', true)
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
-var JwtStrategy = require('passport-jwt').Strategy;
-var ExtractJwt = require('passport-jwt').ExtractJwt;
+
 var { body, validationResult } = require('express-validator');
 var Public = require('../schemas/publicSchema.js');
 var User = require('../schemas/userSchema.js');
-
-var opts = {
-  secretOrKey: process.env.SECRET,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-}
-
-passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-  User.findOne({email: jwt_payload.email}, function(err, user){
-    if (err) {
-      return done(err, false);
-    }
-    if (user) {
-      return done(null, user);
-    }
-    else {return done(null, false);}
-  })
-}));
-
 
 // registeration of the user
 router.post('/user/register',
@@ -88,7 +69,7 @@ router.post('/user/login', function(req, res) {
 
 router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
   var id = req.params.id
-  
+
   //based on viewed site it returns its own profile or others
   Public.findOne({name:id}, (err, public) => {
     
