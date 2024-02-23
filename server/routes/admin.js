@@ -7,6 +7,11 @@ var passport = require('passport');
 
 require('../passport/passport.js') (passport)
 
+router.put('/info/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
+    var name = req.params.name;
 
+    Public.findOneAndUpdate({name:name}, {$unset: {info: ""}},(err, result) => {})
+    res.sendStatus(200)
+})
 
 module.exports = router;

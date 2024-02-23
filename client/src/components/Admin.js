@@ -44,7 +44,11 @@ const Admin = (props) => {
     }
 
     const deleteInfo = () => {
-        console.log("here")
+        fetch('/admin/info/' + data.name, { 
+            method: 'PUT',
+            headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token')
+            }})
     }
     var data = props.data
 
@@ -61,25 +65,11 @@ const Admin = (props) => {
             <br/>
 
             {data.email} <br/>
-            change email: <br/>
-            <form onSubmit={event => {
-                event.preventDefault()
-                sendEmail(event)}}>
-            <input id="email" type='email'/>
-            <button id="sendEmail">Send</button>
-            </form>
-
+            
             <br/>
             <h4>Info</h4>
             <p id="infoData">{data.info}</p> <br/> 
-            info:   
-            <form onSubmit={event => {
-                event.preventDefault()
-                sendInfo(event)}}>
-            <textarea id="info"/>
-            <button id="sendInfo">Send</button>
-            </form>
-
+            
             delete info: <br/>  
             <button id="deleteInfo" onClick={() => deleteInfo()}>Delete Info</button>
         </div></>)
