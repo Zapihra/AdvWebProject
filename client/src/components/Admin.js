@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const Admin = (props) => {
     var bool = true;
 
@@ -61,6 +63,33 @@ const Admin = (props) => {
                 'Authorization': 'bearer ' + localStorage.getItem('auth_token')
             }})
     }
+
+    var [file, setFile] = useState();
+    const fileChange = (e) => {
+        //console.log(e.target.value)
+        if(e.target) {
+            //var photo = .split('th\\')
+            //console.log(photo)
+            setFile(e.target.files[0])
+        }}
+        
+    const sendFile = () => {
+        const formData = new FormData();
+        formData.append("file", file)
+
+
+        fetch('/api/picture/update', {
+            method: "POST",
+            headers: {
+            'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
+            
+            },
+            body: formData
+        })
+        window.location.reload()
+    }
+        
+
     var data = props.data
     var date = data.date.toString().slice(0,10)
 
@@ -92,6 +121,10 @@ const Admin = (props) => {
         <div>
 
             <img src={props.image}></img>
+            change picture
+            <input id="file" type="file" onChange={fileChange}></input> <br/>
+            <button id="sendPicture" onClick={()=> sendFile()}>Send</button>
+
             <h3>
                 {data.name} <br/>
                 

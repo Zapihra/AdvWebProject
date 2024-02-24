@@ -62,7 +62,7 @@ const InfoPage = () => {
                 body: formData
             })
         }
-        //window.location.replace("http://localhost:3000/tclone")
+        window.location.replace("http://localhost:3000/tclone")
     }
 
     return(

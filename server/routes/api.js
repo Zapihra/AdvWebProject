@@ -9,6 +9,7 @@ var jwt = require('jsonwebtoken');
 
 var passport = require('passport');
 require('../passport/passport.js') (passport)
+const fs = require('fs')
 
 
 const multer = require('multer');
@@ -190,6 +191,29 @@ upload.single("file"), (req,res) => {
   var photo = req.file.filename
 
   Public.findOneAndUpdate({id: pid}, {photo: photo}, (err,user)=> {})
+})
+
+router.post('/picture/update', passport.authenticate('jwt', {session: false}), 
+upload.single("file"), (req,res) => {
+  var pid = req.user._id;
+  var photo = req.file.filename
+  var old;
+  
+  Public.findOne({id:pid}, (err,user) => {
+    if (user.photo !== undefined) {
+      old = "C:/Users/iidav/Documents/AdvWebApp/project/server/uploads/" + user.photo
+      console.log(old)
+      fs.unlink(old, (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        }
+        console.log("File removed")
+      })
+    }
+    
+  })
+  Public.updateOne({id: pid}, {photo:photo}, (err,user)=> {})
 })
 
 router.post('/update/:id', passport.authenticate('jwt', {session: false}),
