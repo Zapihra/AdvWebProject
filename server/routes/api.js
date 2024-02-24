@@ -1,16 +1,38 @@
 require('dotenv').config();
 var express = require('express');
 var router = express.Router();
+
 var mongoose = require('mongoose');
 mongoose.set('strictQuery', true)
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+
 var passport = require('passport');
 require('../passport/passport.js') (passport)
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/')
+  },
+  filename: (req, file, cb)=> {
+    //help at https://stackoverflow.com/questions/54113654/creating-a-random-string-in-cypress-and-passing-this-to-a-cy-command
+    var random = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (var i = 0; i < 10; i++)
+      random += possible.charAt(Math.floor(Math.random() * possible.length));
+    //
+    cb(null, random + file.originalname)
+  }
+})
+const upload = multer({storage:storage})
+
+const fs = require('fs')
 
 var { body, validationResult } = require('express-validator');
 var Public = require('../schemas/publicSchema.js');
 var User = require('../schemas/userSchema.js');
+var Images = require('../schemas/imageSchema.js');
 
 // registeration of the user
 router.post('/user/register',
@@ -112,8 +134,12 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
 
 router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
   Public.findOne({id: req.user._id}, (err, user) => {
-    console.log(user.name)
-    res.json({"user": user.name}).status(200)
+    if(user) {
+      res.json({"user": user.name}).status(200)
+    }
+    else {
+      res.sendStatus(200)
+    }
   })
 })
 
@@ -154,6 +180,14 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
     else {
       res.json({"res": "user found", user: user.name})}
   })
+})
+
+router.post('/picture', passport.authenticate('jwt', {session: false}), 
+upload.single("file"), (req,res) => {
+  var pid = req.user._id;
+  var photo = req.file.filename
+
+  Public.findOneAndUpdate({id: pid}, {photo: photo}, (err,user)=> {})
 })
 
 router.post('/update/:id', passport.authenticate('jwt', {session: false}),
