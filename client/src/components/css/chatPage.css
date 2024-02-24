@@ -1,21 +1,46 @@
 /*help from 
 https://codesandbox.io/p/sandbox/fixed-sidebar-oenio?file=%2Fsrc%2Fstyles.css%3A1%2C1-6%2C2*/
 
-.container {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    margin: 0 auto;
+@media only screen and (max-width: 600px){
+    .container {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin: 0 auto;
+    }
+    
+    .sidebar{
+        flex: 60px 50px 0;
+        height: 100vh;
+        background-color: antiquewhite;
+    }
+    
+    .main {
+        flex: 200px 100px 0;
+        height: 100vh;
+    }
 }
 
-.sidebar{
-    flex: 100px 50px 0;
-    height: 100vh;
-    background-color: antiquewhite;
+@media only screen and (min-width: 600px){
+    .container {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin: 0 auto;
+    }
+    
+    .sidebar{
+        flex: 10px 50px 0;
+        height: 100vh;
+        background-color: antiquewhite;
+        width: 200px;
+    }
+    
+    .main {
+        flex: 400px 100px 0;
+        height: 100vh;
+        padding-left: 50px;
+    }
 }
 
-.main {
-    flex: 200px 100px 0;
-    height: 100vh;
-}
 

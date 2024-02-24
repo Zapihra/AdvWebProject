@@ -1,4 +1,5 @@
 const Admin = (props) => {
+    var bool = true;
 
     const sendEmail = (event) => {
         
@@ -40,7 +41,17 @@ const Admin = (props) => {
     }
 
     const deleteUser = () => {
-        console.log("hello")
+        console.log(bool)
+        if (bool === true) {
+            bool = false;
+            fetch('/admin/user/' + data.name, { 
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'bearer ' + localStorage.getItem('auth_token')
+            }})
+        }
+        window.location.replace('http://localhost:3000/tclone')
+        
     }
 
     const deleteInfo = () => {

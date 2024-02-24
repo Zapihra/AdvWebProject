@@ -4,6 +4,7 @@ const publicSchema = new mongoose.Schema({
   id: {type: Object},
   name: {type: String},
   info: {type: String},
+  date: {type: Date},
   picture: {type: String, required: false},
   update:{type: Boolean, default: true}, 
   neutral: {type: Array},

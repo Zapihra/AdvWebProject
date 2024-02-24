@@ -14,4 +14,22 @@ router.put('/info/:name', passport.authenticate('jwt', {session: false}), (req,r
     res.sendStatus(200)
 })
 
+router.delete('/user/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
+    var name = req.params.name
+    Public.findOne({name: name}, (err, exist) => {
+        if(exist) {
+            Public.findOne({name: name}, (err, user) => {
+                User.findOneAndDelete({_id: user.id}, (err,result) => {})
+            })
+            Public.deleteOne({name: name}, (err, user) => {})
+            Chats.deleteMany({$or: [{name1: name}, {name2: name}]}, (err, chats) => {})
+            Public.updateMany({}, {$pull: {neutral:name}}).exec()
+            Public.updateMany({}, {$pull: {liked:name}}).exec()
+            Public.updateMany({}, {$pull: {dislike:name}}).exec()
+            res.sendStatus(200)
+        }
+        
+    })
+})
+
 module.exports = router;
