@@ -1,3 +1,6 @@
+//navbar from bootstrap website
+//https://getbootstrap.com/docs/4.1/components/navbar/
+
 const Header = (props) => {
     var url = "/profile/" + props.name
  return( <>

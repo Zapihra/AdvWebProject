@@ -2,11 +2,13 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import ErrorPage from './ErrorPage';
 import Admin from './Admin';
+import Header from "./Header";
 
 const ProfilePage = () => {
     
     let {id} = useParams()
     const [data, setData] = useState(1);
+    var [name, setName] = useState();
 
     useEffect(() => {
         const api = async () => {
@@ -27,7 +29,20 @@ const ProfilePage = () => {
         api()
         
     }, []);
-    
+    useEffect(() => {
+        fetch('http://localhost:1234/api/private', {
+            headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
+        }).then((res) => {
+            if (res.statusText === 'Unauthorized'){
+                window.location.replace("http://localhost:3000/login")
+            }
+            return res.json()})
+        .then((res) => {
+            setName(res.user)
+        })
+
+    }, []);
     if (data === 0) {
         return(<><ErrorPage/></>)
     }
@@ -38,6 +53,7 @@ const ProfilePage = () => {
         
         return(<>
             <div>
+                <Header name={name}/>
                 <h3>{data.name}</h3>
                 <a>User since {date}</a>
                 <p>{data.info}</p>
@@ -48,6 +64,7 @@ const ProfilePage = () => {
     else {
         return(
             <>
+                <Header name={name}/>
                 <Admin data={data}/>
             </>
         )

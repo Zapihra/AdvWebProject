@@ -2,11 +2,13 @@ import "./css/chatPage.css"
 import { useEffect, useState } from "react"
 import { useParams } from 'react-router-dom';
 import Pagination from "./Pagination";
+import Header from "./Header";
 
 const ChatPage = () => {
     let {id,page} = useParams();
     let [fetchedList, setFetchList] = useState();
     let [fetchedChat, setFetchChat] = useState("click a chat!");
+    var [name, setName] = useState();
 
     useEffect(() => {
         let mounted = true;
@@ -56,7 +58,20 @@ const ChatPage = () => {
         return () => {mounted = false}
 
     }, [])
+    useEffect(() => {
+        fetch('http://localhost:1234/api/private', {
+            headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
+        }).then((res) => {
+            if (res.statusText === 'Unauthorized'){
+                window.location.replace("http://localhost:3000/login")
+            }
+            return res.json()})
+        .then((res) => {
+            setName(res.user)
+        })
 
+    }, []);
     const handleClick = (name) => {
         window.location.replace(`http://localhost:3000/chats/${name}/${page}`)
     }
@@ -81,7 +96,7 @@ const ChatPage = () => {
         if (id === 'main') {
             return(
                 <>
-                
+                <Header name={name}/>
                 <div className="container">
                     <div className="sidebar">
                     <Pagination list={fetchedList} page={page} />
@@ -97,7 +112,7 @@ const ChatPage = () => {
         else {
             return(
                 <>
-                
+                <Header name={name}/>
                 <div className="container">
                     <div className="sidebar">
                         <Pagination list={fetchedList} page={page} />
