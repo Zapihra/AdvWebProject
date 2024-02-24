@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const InfoPage = () => {
 
     //some reason proxy doesn't work here
@@ -12,7 +14,19 @@ const InfoPage = () => {
             }
         })
 
+    var [file, setFile] = useState();
+    const fileChange = (e) => {
+        //console.log(e.target.value)
+        if(e.target) {
+            //var photo = .split('th\\')
+            //console.log(photo)
+            setFile(e.target.files[0])
+        }}
+
     const submitForm = (event) => {
+
+       const formData = new FormData();
+       formData.append("file", file)
        
        var name = event.target.name.value
        var info = event.target.info.value
@@ -34,10 +48,21 @@ const InfoPage = () => {
                 var name = res.user
                 window.location.replace(`http://localhost:3000/profile/${name}`)
             }
-            else if (res.res === 'ok') {
-                window.location.replace("http://localhost:3000/tclone")
-            }
+            //else if (res.res === 'ok') {
+            //    window.location.replace("http://localhost:3000/tclone")
+            //}
         })
+        if(file) {
+            fetch('/api/picture', {
+                method: "POST",
+                headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
+                
+                },
+                body: formData
+            })
+        }
+        //window.location.replace("http://localhost:3000/tclone")
     }
 
     return(
@@ -51,8 +76,15 @@ const InfoPage = () => {
 
             name<input id="name"/> <br/>
             info about me <br/><textarea id="info"/> <br/>
+
+            add picture <br/>
+            <input id="file" type="file" onChange={fileChange}></input> <br/>
+
             <input id="submit" type="submit"/>
             </form>
+
+            
+        
         </div>
         
         </>
