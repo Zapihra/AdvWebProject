@@ -202,7 +202,7 @@ upload.single("file"), (req,res) => {
   Public.findOne({id:pid}, (err,user) => {
     if (user.photo !== undefined) {
       old = "C:/Users/iidav/Documents/AdvWebApp/project/server/uploads/" + user.photo
-      console.log(old)
+  
       fs.unlink(old, (err) => {
         if (err) {
           console.error(err);
@@ -214,6 +214,18 @@ upload.single("file"), (req,res) => {
     
   })
   Public.updateOne({id: pid}, {photo:photo}, (err,user)=> {})
+})
+
+router.get('/photo/:name', passport.authenticate('jwt', {session: false}), (req, res) => {
+  
+  Public.findOne({name:req.params.name}, (err, user)=> {
+    if(user.photo) {
+      res.json({photo: user.photo})
+    }
+    else {
+      res.json({photo: undefined})
+    }
+  })
 })
 
 router.post('/update/:id', passport.authenticate('jwt', {session: false}),

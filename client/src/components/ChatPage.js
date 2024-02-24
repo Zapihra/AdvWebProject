@@ -3,17 +3,41 @@ import { useEffect, useState } from "react"
 import { useParams } from 'react-router-dom';
 import Pagination from "./Pagination";
 import Header from "./Header";
+import Img from "./Img"
 
 const ChatPage = () => {
     let {id,page} = useParams();
     let [fetchedList, setFetchList] = useState();
     let [fetchedChat, setFetchChat] = useState("click a chat!");
     var [name, setName] = useState();
+    var [photo, setPhoto] = useState();
 
     useEffect(() => {
-        let mounted = true;
 
-        function fetchList() {
+        if (id !== "main") {
+            
+            fetch(`/api/photo/${id}`, {
+                headers: {
+                    'Authorization': 'bearer ' + localStorage.getItem('auth_token')},
+                    
+            }).then((res) => {
+                if (res.statusText === 'Unauthorized'){
+                    window.location.replace("http://localhost:3000/login")
+                }
+                return res.json()})
+            .then((res) => {
+                
+                if (res.length === 0) {
+                    setPhoto(undefined)
+                }
+                else {
+                    setPhoto(res.photo)
+                }
+                
+            })
+        }
+
+        
             fetch(`/chat/matched/${id}`, {
                 method: 'GET', 
                 headers: {
@@ -52,10 +76,9 @@ const ChatPage = () => {
                 }
                                 
             })
-        }
-        fetchList()
+        
 
-        return () => {mounted = false}
+        return
 
     }, [])
     useEffect(() => {
@@ -68,14 +91,18 @@ const ChatPage = () => {
             }
             return res.json()})
         .then((res) => {
-            setName(res.user)
+            setName(res)
         })
+        
+        
 
     }, []);
+
     const handleClick = (name) => {
         window.location.replace(`http://localhost:3000/chats/${name}/${page}`)
     }
 
+    //console.log(info)
     const sendText = (e) => {
         //console.log(e.target.area.value)
         fetch('/chat/add', {
@@ -90,6 +117,10 @@ const ChatPage = () => {
     }
     const reload = () => {
         window.location.reload()
+    }
+
+    const goProfile = () => {
+        window.location.replace(`http://localhost:3000/profile/${id}`)
     }
     
     if(fetchedList) {
@@ -110,6 +141,7 @@ const ChatPage = () => {
             )
         }
         else {
+
             return(
                 <>
                 <Header name={name}/>
@@ -119,6 +151,8 @@ const ChatPage = () => {
                     </div>
                     <div className="main">
                         <button onClick={() => reload()}>reload</button> <br/>
+                        <Img photo={photo}/>
+                        <h5 onClick={() => goProfile()}>{id}</h5> <br/>
                         {fetchedChat}
                         <form onSubmit={(e) => {
                             //e.preventDefault()
