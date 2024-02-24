@@ -10,6 +10,7 @@ var jwt = require('jsonwebtoken');
 var passport = require('passport');
 require('../passport/passport.js') (passport)
 
+
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -27,12 +28,10 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage:storage})
 
-const fs = require('fs')
 
 var { body, validationResult } = require('express-validator');
 var Public = require('../schemas/publicSchema.js');
 var User = require('../schemas/userSchema.js');
-var Images = require('../schemas/imageSchema.js');
 
 // registeration of the user
 router.post('/user/register',
@@ -103,7 +102,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
         "email": req.user.email,
         "name": public.name,
         "info": public.info,
-        "date": public.date
+        "date": public.date,
+        "photo": public.photo
       }).status(200)
     }
     else if (req.user.email === "admin@admin") {
@@ -115,7 +115,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
           "name": public.name,
           "info": public.info,
           "user": "admin",
-          "date": public.date
+          "date": public.date,
+          "photo": public.photo
         }).status(200)
       })
 
@@ -125,7 +126,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
       return res.json({
         "name": public.name,
         "info": public.info,
-        "date": public.date
+        "date": public.date,
+        "photo": public.photo
       })
     }
   })

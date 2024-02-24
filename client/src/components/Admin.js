@@ -63,7 +63,6 @@ const Admin = (props) => {
     }
     var data = props.data
     var date = data.date.toString().slice(0,10)
-    console.log(date)
 
     if (data.user) {
         
@@ -91,6 +90,8 @@ const Admin = (props) => {
     else {
         return(<>
         <div>
+
+            <img src={props.image}></img>
             <h3>
                 {data.name} <br/>
                 

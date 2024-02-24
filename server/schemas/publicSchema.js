@@ -5,7 +5,7 @@ const publicSchema = new mongoose.Schema({
   name: {type: String},
   info: {type: String},
   date: {type: Date},
-  photo: {type: Buffer},
+  photo: {type: String},
   update:{type: Boolean, default: true}, 
   neutral: {type: Array},
   liked: {type: Array},

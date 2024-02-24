@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ErrorPage from './ErrorPage';
 import Admin from './Admin';
 import Header from "./Header";
+import Img from './Img';
 
 const ProfilePage = () => {
     
@@ -43,6 +44,8 @@ const ProfilePage = () => {
         })
 
     }, []);
+
+
     if (data === 0) {
         return(<><ErrorPage/></>)
     }
@@ -50,10 +53,10 @@ const ProfilePage = () => {
     else if (data.email === undefined) {
         var date = data.date.toString().slice(0,10)
         
-        
         return(<>
             <div>
                 <Header name={name}/>
+                <Img photo={data.photo}/>
                 <h3>{data.name}</h3>
                 <a>User since {date}</a>
                 <p>{data.info}</p>
@@ -65,6 +68,7 @@ const ProfilePage = () => {
         return(
             <>
                 <Header name={name}/>
+                <Img photo={data.photo}/>
                 <Admin data={data}/>
             </>
         )

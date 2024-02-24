@@ -29,5 +29,6 @@ app.use(cors())
 app.use('/api', apiRouter);
 app.use('/chat', chatRouter);
 app.use('/admin', adminRouter), 
+app.use('/uploads', express.static(__dirname + '/uploads'))
 
 module.exports = app;
