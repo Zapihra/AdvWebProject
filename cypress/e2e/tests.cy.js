@@ -167,7 +167,7 @@ describe('admin', () => {
     cy.visit("http://localhost:3000/profile/" + user)
     cy.get("[id=deleteInfo]").should("exist")
     cy.get("[id=deleteUser]").should("exist").click()
-    cy.get('h1').should('contain', "404")
+    cy.url().should('include', "/tclone")
 
     cy.visit('http://localhost:3000/login')
     cy.get('input[id=email]').type("admin@admin")

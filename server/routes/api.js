@@ -111,15 +111,16 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
 })
 
 router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
-  res.sendStatus(200)
+  Public.findOne({id: req.user._id}, (err, user) => {
+    console.log(user.name)
+    res.json({"user": user.name}).status(200)
+  })
 })
 
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
   var body = req.body
   var pid = req.user._id
   var date = new Date().toUTCString()
-  console.log(date)
-
 
   Public.findOne({id: pid}, (err, user) => {
     if(!user) { 

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import "./css/clonePage.css"
+import Header from "./Header";
 
 const ClonePage = () => {
 
     const [data, setData] = useState({});
+    const [name, setName] = useState();
     
     useEffect(() => {
         fetch('/api/neutral', {headers: {
@@ -21,6 +24,20 @@ const ClonePage = () => {
                 setData(0)
             }
             return
+        })
+
+    }, []);
+    useEffect(() => {
+        fetch('http://localhost:1234/api/private', {
+            headers: {
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
+        }).then((res) => {
+            if (res.statusText === 'Unauthorized'){
+                window.location.replace("http://localhost:3000/login")
+            }
+            return res.json()})
+        .then((res) => {
+            setName(res.user)
         })
 
     }, []);
@@ -66,12 +83,13 @@ const ClonePage = () => {
     }
 
     if (data !== 0) {
-
+        var url = "http://localhost:3000/profile/" + data.name
         return(
             <>
+            <Header name={name}/>
             <div>
                 <div>
-                    {data.name} <br/>
+                    <a href={url}>{data.name}</a> <br/>
                     {data.info} <br/>
                 </div>
     
@@ -80,12 +98,11 @@ const ClonePage = () => {
             </div>                
             </>
             )
-
-        
     }
     else{
         return(
             <>
+                <Header name={name}/>
                 <div>
                     all profiles have been liked or disliked
                 </div>
