@@ -6,7 +6,7 @@ import Admin from './Admin';
 const ProfilePage = () => {
     
     let {id} = useParams()
-    const [data, setData] = useState({});
+    const [data, setData] = useState(1);
 
     useEffect(() => {
         const api = async () => {
@@ -27,16 +27,21 @@ const ProfilePage = () => {
         api()
         
     }, []);
-
+    
     if (data === 0) {
         return(<><ErrorPage/></>)
     }
+    else if (data === 1){}
     else if (data.email === undefined) {
-
+        var date = data.date.toString().slice(0,10)
+        
+        
         return(<>
             <div>
                 <h3>{data.name}</h3>
+                <a>User since {date}</a>
                 <p>{data.info}</p>
+                
                     
             </div></>)
     }

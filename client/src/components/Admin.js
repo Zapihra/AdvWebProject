@@ -62,6 +62,8 @@ const Admin = (props) => {
             }})
     }
     var data = props.data
+    var date = data.date.toString().slice(0,10)
+    console.log(date)
 
     if (data.user) {
         
@@ -79,6 +81,7 @@ const Admin = (props) => {
             
             <br/>
             <h4>Info</h4>
+            <a>User since {date}</a>
             <p id="infoData">{data.info}</p> <br/> 
             
             delete info: <br/>  
@@ -103,7 +106,9 @@ const Admin = (props) => {
 
             <br/>
             <h4>Info</h4>
+            <a>User since {date}</a> <br/>
             <p id="infoData">{data.info}</p> <br/> 
+            
             update info:   
             <form onSubmit={event => {
                 event.preventDefault()

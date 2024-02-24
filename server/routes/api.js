@@ -80,7 +80,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
       return res.json({
         "email": req.user.email,
         "name": public.name,
-        "info": public.info
+        "info": public.info,
+        "date": public.date
       }).status(200)
     }
     else if (req.user.email === "admin@admin") {
@@ -91,7 +92,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
           "email": user.email,
           "name": public.name,
           "info": public.info,
-          "user": "admin"
+          "user": "admin",
+          "date": public.date
         }).status(200)
       })
 
@@ -100,7 +102,8 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
       //other profile
       return res.json({
         "name": public.name,
-        "info": public.info
+        "info": public.info,
+        "date": public.date
       })
     }
   })
@@ -114,6 +117,9 @@ router.get('/private', passport.authenticate('jwt', {session: false}), (req,res)
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
   var body = req.body
   var pid = req.user._id
+  var date = new Date().toUTCString()
+  console.log(date)
+
 
   Public.findOne({id: pid}, (err, user) => {
     if(!user) { 
@@ -135,6 +141,7 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
         id: pid,
         name: body.name,
         info: body.info,
+        date: date,
         liked: [],
         dislike: [],
         neutral: userMap
