@@ -7,6 +7,7 @@ const RegisterPage = () => {
     var email = event.target.email.value
     var password = event.target.password.value
     
+    //sending register information to server
     fetch("/api/user/register", {
       method: "POST",
       headers: {

@@ -6,10 +6,12 @@ const Img = (props) => {
     var [image, setImage] = useState();
     
     useEffect(()=> {
+        //checking if user has a photo
         if (props.photo === undefined){
             return
         }
-
+        
+        //getting the photo from server
         fetch(`http://localhost:1234/uploads/${props.photo}`, {
             method: "get"
         }).then((res) => {
@@ -28,6 +30,7 @@ const Img = (props) => {
     
     }, []);
     if(image) {
+        //showing the image
         return(<>
     
             <img src={image}></img>

@@ -1,6 +1,7 @@
 //navbar from bootstrap website
 //https://getbootstrap.com/docs/4.1/components/navbar/
 
+ //the header for who have logged in
 const Header = (props) => {
     var url = "/profile/" + props.name
 

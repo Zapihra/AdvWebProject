@@ -13,6 +13,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const api = async () => {
+            //fetching user data
             var res = await fetch(`/api/user/${id}`, 
             {headers: {
                 'Authorization': 'bearer ' + localStorage.getItem('auth_token')}})
@@ -24,13 +25,13 @@ const ProfilePage = () => {
                 var resJson = await res.json()
                 setData(resJson)
             }
-            
         }
 
         api()
         
     }, []);
     useEffect(() => {
+        //fetching the name of user for profile link
         fetch('http://localhost:1234/api/private', {
             headers: {
                 'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
@@ -47,10 +48,12 @@ const ProfilePage = () => {
 
 
     if (data === 0) {
+        //returning error if nothing is found
         return(<><ErrorPage/></>)
     }
     else if (data === 1){}
     else if (data.email === undefined) {
+        //showing other user profile
         var date = data.date.toString().slice(0,10)
         
         return(<>
@@ -60,13 +63,13 @@ const ProfilePage = () => {
                 <h3>{data.name}</h3>
                 <a>User since {date}</a>
                 <p>{data.info}</p>
-                
-                    
+                  
             </div></>)
     }
     else {
+        //showing admin or own profile
         return(
-            <>
+            <>  
                 <Header name={name}/>
                 <Img photo={data.photo}/>
                 <Admin data={data}/>

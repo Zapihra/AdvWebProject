@@ -1,4 +1,4 @@
-const ErrorPage = () => { 
+const ErrorPage = () => {
     return (
       <>
       <div>

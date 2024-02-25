@@ -3,6 +3,7 @@ import { useState } from "react";
 const InfoPage = () => {
 
     //some reason proxy doesn't work here
+    //checking if the person is logged in 
     fetch('http://localhost:1234/api/private', { 
         method: 'GET',
         headers: {
@@ -16,21 +17,22 @@ const InfoPage = () => {
 
     var [file, setFile] = useState();
     const fileChange = (e) => {
-        //console.log(e.target.value)
+        //handling the adding picture
         if(e.target) {
-            //var photo = .split('th\\')
-            //console.log(photo)
             setFile(e.target.files[0])
         }}
 
     const submitForm = (event) => {
 
-       const formData = new FormData();
-       formData.append("file", file)
+        //hadling the submitting of info and file
+
+        const formData = new FormData();
+        formData.append("file", file)
        
-       var name = event.target.name.value
-       var info = event.target.info.value
-    
+        var name = event.target.name.value
+        var info = event.target.info.value
+        
+        //sending all but file
         fetch("/api/public", {
           method: "POST",
           headers: {
@@ -48,16 +50,13 @@ const InfoPage = () => {
                 var name = res.user
                 window.location.replace(`http://localhost:3000/profile/${name}`)
             }
-            //else if (res.res === 'ok') {
-            //    window.location.replace("http://localhost:3000/tclone")
-            //}
         })
         if(file) {
+            //sending file
             fetch('/api/picture', {
                 method: "POST",
                 headers: {
-                'Authorization': 'bearer ' + localStorage.getItem('auth_token'),
-                
+                'Authorization': 'bearer ' + localStorage.getItem('auth_token')
                 },
                 body: formData
             })
@@ -82,8 +81,6 @@ const InfoPage = () => {
 
             <input id="submit" type="submit"/>
             </form>
-
-            
         
         </div>
         

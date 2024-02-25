@@ -15,7 +15,7 @@ const ChatPage = () => {
     useEffect(() => {
 
         if (id !== "main") {
-            
+            //fetchin picture if we are not in the chats main page
             fetch(`/api/photo/${id}`, {
                 headers: {
                     'Authorization': 'bearer ' + localStorage.getItem('auth_token')},
@@ -37,7 +37,7 @@ const ChatPage = () => {
             })
         }
 
-        
+            //fetching all the persons that are matched
             fetch(`/chat/matched/${id}`, {
                 method: 'GET', 
                 headers: {
@@ -49,7 +49,7 @@ const ChatPage = () => {
                 }
                 return res.json()
             }).then((res)=> {
-
+                //if in main page we only return the sidebar list of names
                 if (id === "main") {
                     var fetchedList = res.map((item) =>
                         <h5 key={item[0]} onClick={(e) => handleClick(item[1])}>{item[1]}</h5>
@@ -57,8 +57,8 @@ const ChatPage = () => {
                     setFetchList(fetchedList)
                 }
                 else {
-                    //console.log(res)
                     
+                    //if in chat with someone we also define the chat 
                     var fetchedList = res[1].map((item) =>
                         <h5 key={item[0]} onClick={(e) => handleClick(item[1])}>{item[1]}</h5>
                     )
@@ -81,7 +81,9 @@ const ChatPage = () => {
         return
 
     }, [])
+
     useEffect(() => {
+        //getting the users name for profile
         fetch('http://localhost:1234/api/private', {
             headers: {
                 'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
@@ -94,17 +96,16 @@ const ChatPage = () => {
             setName(res)
         })
         
-        
-
     }, []);
 
+    //moving from one chat to another
     const handleClick = (name) => {
         window.location.replace(`http://localhost:3000/chats/${name}/${page}`)
     }
 
-    //console.log(info)
+    //sending text to another user
     const sendText = (e) => {
-        //console.log(e.target.area.value)
+
         fetch('/chat/add', {
             method: 'POST',
             headers: {
@@ -115,16 +116,21 @@ const ChatPage = () => {
         })
     
     }
+
+    //reloading function for reload button
     const reload = () => {
         window.location.reload()
     }
 
+    //handling move to another persons profile
     const goProfile = () => {
         window.location.replace(`http://localhost:3000/profile/${id}`)
     }
     
     if(fetchedList) {
         if (id === 'main') {
+
+            //returning only sidebar functionality
             return(
                 <>
                 <Header name={name}/>
@@ -142,6 +148,7 @@ const ChatPage = () => {
         }
         else {
 
+            //returning the chat with the sidebar
             return(
                 <>
                 <Header name={name}/>
@@ -155,7 +162,6 @@ const ChatPage = () => {
                         <h5 onClick={() => goProfile()}>{id}</h5> <br/>
                         {fetchedChat}
                         <form onSubmit={(e) => {
-                            //e.preventDefault()
                             sendText(e)
                         }}>
                             <textarea id="area"/> <br/>

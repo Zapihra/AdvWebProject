@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const Admin = (props) => {
     var bool = true;
 
+    //handling email change
     const sendEmail = (event) => {
         
         fetch('/api/update/email', { 
@@ -16,6 +17,7 @@ const Admin = (props) => {
         })})
     }
 
+    //handling info/bio change
     const sendInfo = (event) => {
         
         fetch('/api/update/info', { 
@@ -29,6 +31,7 @@ const Admin = (props) => {
         })})
     }
 
+    //handling password change
     const sendPassword = (event) => {
         
         fetch('/api/update/password', { 
@@ -42,6 +45,7 @@ const Admin = (props) => {
         })})
     }
 
+    //admin delete user from database
     const deleteUser = () => {
         console.log(bool)
         if (bool === true) {
@@ -56,6 +60,7 @@ const Admin = (props) => {
         
     }
 
+    //admins can delete info
     const deleteInfo = () => {
         fetch('/admin/info/' + data.name, { 
             method: 'PUT',
@@ -64,15 +69,16 @@ const Admin = (props) => {
             }})
     }
 
+    //uploading picture useState for sending
     var [file, setFile] = useState();
     const fileChange = (e) => {
-        //console.log(e.target.value)
+        
+        //checking if there is file on filechange
         if(e.target) {
-            //var photo = .split('th\\')
-            //console.log(photo)
             setFile(e.target.files[0])
         }}
         
+    //sending image to server
     const sendFile = () => {
         const formData = new FormData();
         formData.append("file", file)
@@ -89,10 +95,12 @@ const Admin = (props) => {
         window.location.reload()
     }
         
-
+    //handling the data and date to more easier use
     var data = props.data
     var date = data.date.toString().slice(0,10)
 
+    //returned if user is existing 
+    //so in other words the admin is logged in
     if (data.user) {
         
         return( 
@@ -117,6 +125,8 @@ const Admin = (props) => {
         </div></>)
     }
     else {
+        //returned if anybody else than admin is 
+        //logged in for their own profile modification possibility
         return(<>
         <div>
 

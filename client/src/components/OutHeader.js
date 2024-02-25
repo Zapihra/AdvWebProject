@@ -1,6 +1,7 @@
 //navbar from bootstrap website
 //https://getbootstrap.com/docs/4.1/components/navbar/
 
+//header for not logged in users
 const OutHeader = (props) => {
     
  return( <>

@@ -9,6 +9,7 @@ const ClonePage = () => {
     const [name, setName] = useState();
     
     useEffect(() => {
+        //fetching list that the user hasnt made a decision
         fetch('/api/neutral', {headers: {
             'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
         }).then((res) => {
@@ -29,6 +30,7 @@ const ClonePage = () => {
 
     }, []);
     useEffect(() => {
+        //getting the users name for profile linking in header
         fetch('http://localhost:1234/api/private', {
             headers: {
                 'Authorization': 'bearer ' + localStorage.getItem('auth_token')}
@@ -43,6 +45,7 @@ const ClonePage = () => {
 
     }, []);
 
+    //functionality for liking someone
     const liked = () => {
         fetch('/api/opinion/liked', {
             method: 'PUT',
@@ -57,6 +60,7 @@ const ClonePage = () => {
             }
         })
 
+        //checking if the other person has liked them
         fetch('/chat/check', {
             method: 'POST', 
             headers: {
@@ -68,6 +72,7 @@ const ClonePage = () => {
         
     }
 
+    //dislikeing functionality
     const disliked = () => {
         fetch('/api/opinion/dislike', {
             method: 'PUT',
@@ -83,15 +88,20 @@ const ClonePage = () => {
         })
     }
 
+    //handling swipes
     const handlers = useSwipeable({
         onSwipedLeft: () => disliked(),//disliked
         onSwipedRight: () => liked(), //liked
         trackMouse: true
     })
+
+    
     if(data.res === "info") {
+        //if info (name, bio) is not defined then redirect for adding them
         window.location.replace("http://localhost:3000/info")
     }
     else if (data.res !== 0) {
+        //if neutral user has been found it is shown
         var url = "http://localhost:3000/profile/" + data.name
         return(
             <>
@@ -111,6 +121,7 @@ const ClonePage = () => {
             )
     }
     else{
+        //if there is no more neutral persons in your list
         return(
             <>
                 <Header name={name}/>

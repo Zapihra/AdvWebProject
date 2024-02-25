@@ -174,8 +174,6 @@ describe('admin', () => {
     cy.get('input[id=password]').type("admin")
     cy.get('input[id=submit]').click()
     cy.wait(500)
-    
-
   })
 })
 
