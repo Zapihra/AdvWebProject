@@ -2,6 +2,7 @@
 describe('register', () => {
   it('user should be able to register', () => {
     cy.visit('http://localhost:3000/register')
+
     //help at https://stackoverflow.com/questions/54113654/creating-a-random-string-in-cypress-and-passing-this-to-a-cy-command
     var user = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -89,6 +90,7 @@ describe('interest', ()=> {
   it('user should user should be able to like and dislike other users', () => {
     cy.restoreLocalStorage();
     cy.visit("http://localhost:3000/tclone")
+    //liking other user
     cy.intercept('PUT', '/api/opinion/liked').as('putLiked')
     cy.wait(500)
     cy.get("[id=like]").click()
@@ -96,6 +98,8 @@ describe('interest', ()=> {
       const {statusCode} = intercept.response
       expect(statusCode).to.eq(200)
     })
+
+    //disliking other user
     cy.intercept('PUT', '/api/opinion/dislike').as('putDislike')
     cy.wait(500)
     cy.get("[id=dislike]").click()
@@ -129,6 +133,7 @@ describe('chat', () => {
 // test 8
 describe('chatting', () => {
   it('chats should show for the other user', () => {
+    //sending message for aa
     var user = Cypress.env('user')
     cy.restoreLocalStorage()
     cy.visit('http://localhost:3000/chats/main/1')
@@ -140,6 +145,7 @@ describe('chatting', () => {
 
     cy.clearAllLocalStorage()
 
+    //checking if aa resieved message
     cy.visit('http://localhost:3000/login')
     cy.get('input[id=email]').type("aa@aa")
     cy.get('input[id=password]').type("aa")
