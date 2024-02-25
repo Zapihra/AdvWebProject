@@ -1,3 +1,5 @@
+import OutHeader from "./OutHeader"
+
 const LoginPage = () => { 
 
     const submitForm = (event) => {
@@ -18,7 +20,7 @@ const LoginPage = () => {
             if(res.success === true) {
                 localStorage.setItem('auth_token', res.token)
                 //console.log("success")
-                //window.location.replace('http://localhost:3000/')
+                window.location.replace('http://localhost:3000/tclone')
             }
             else {
                 //var body = document.getElementById("body")
@@ -29,6 +31,7 @@ const LoginPage = () => {
   
       return (
         <>
+          <OutHeader/>
           <h1>Login</h1>
           <form id="login-form" onSubmit={(event) => {
             event.preventDefault()

@@ -1,3 +1,5 @@
+import OutHeader from "./OutHeader"
+
 const RegisterPage = () => { 
 
   const submitForm = (event) => {
@@ -22,6 +24,7 @@ const RegisterPage = () => {
 
     return (
       <>
+        <OutHeader/>
         <h1>registeration</h1>
         <form id="register-form" onSubmit={(event) => {
           event.preventDefault()

@@ -259,18 +259,24 @@ router.post('/update/:id', passport.authenticate('jwt', {session: false}),
 router.get('/neutral', passport.authenticate('jwt', {session: false}), (req,res) => {
   
   Public.findOne({id: req.user._id}, (err, public) =>{
-    
     //making the original list
-    var original = public.neutral
-    if (original.length === 0) {
-      res.json({res: 0})
-      
+    if(!public){
+      res.json({res: "info"})
     }
     else {
-      Public.findOne({name: original[0]}, (err, person) => {
-        res.json({"name": person.name, "info": person.info})
-      })   
-    } 
+      var original = public.neutral
+      
+      if (original.length === 0) {
+        res.json({res: 0})
+        
+      }
+      else {
+        Public.findOne({name: original[0]}, (err, person) => {
+          res.json({"name": person.name, "info": person.info})
+        })   
+      } 
+    }
+    
   })
 })
 

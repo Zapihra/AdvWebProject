@@ -18,7 +18,7 @@ const ClonePage = () => {
             return res.json()})
         .then((res) => {
             
-            if (res.res !== 0) {
+            if (res !== 0) {
                 setData(res)
             }
             else {
@@ -83,14 +83,15 @@ const ClonePage = () => {
         })
     }
 
-
     const handlers = useSwipeable({
         onSwipedLeft: () => disliked(),//disliked
         onSwipedRight: () => liked(), //liked
         trackMouse: true
     })
-
-    if (data !== 0) {
+    if(data.res === "info") {
+        window.location.replace("http://localhost:3000/info")
+    }
+    else if (data.res !== 0) {
         var url = "http://localhost:3000/profile/" + data.name
         return(
             <>
@@ -113,7 +114,7 @@ const ClonePage = () => {
         return(
             <>
                 <Header name={name}/>
-                <div>
+                <div id="handlers">
                     all profiles have been liked or disliked
                 </div>
             </>
