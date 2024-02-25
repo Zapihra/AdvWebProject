@@ -10,7 +10,7 @@ describe('register', () => {
     //
     Cypress.env('user', user)
     cy.get('input[id=email]').type(user + "@email")
-    cy.get('input[id=password]').type(user + 123)
+    cy.get('input[id=password]').type(user + "_" +123)
     cy.get('input[id=submit]').click()
 
     cy.url().should('include', '/login')
@@ -23,7 +23,7 @@ describe('login', () => {
     var user = Cypress.env('user')
     cy.visit('http://localhost:3000/login')
     cy.get('input[id=email]').type(user + "@email")
-    cy.get('input[id=password]').type(user + 123)
+    cy.get('input[id=password]').type(user + "_" + 123)
     cy.get('input[id=submit]').click()
     
     cy.wait(500)

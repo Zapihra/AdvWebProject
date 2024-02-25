@@ -7,6 +7,7 @@ var passport = require('passport');
 
 require('../passport/passport.js') (passport)
 
+//handles the deletion of Info
 router.put('/info/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
     var name = req.params.name;
 
@@ -14,6 +15,7 @@ router.put('/info/:name', passport.authenticate('jwt', {session: false}), (req,r
     res.sendStatus(200)
 })
 
+//handles the deletion of user and other that are lnked to it
 router.delete('/user/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
     var name = req.params.name
     Public.findOne({name: name}, (err, exist) => {

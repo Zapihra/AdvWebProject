@@ -4,6 +4,7 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 var passport = require('passport');
 var User = require('../schemas/userSchema')
 
+//defining passport
 module.exports = function (passport){
     var opts = {
         secretOrKey: process.env.SECRET,

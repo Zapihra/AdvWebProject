@@ -2,22 +2,26 @@ require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 
+//requires for handling registering and mongoose
 var mongoose = require('mongoose');
 mongoose.set('strictQuery', true)
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
+//requires that handle passport
 var passport = require('passport');
 require('../passport/passport.js') (passport)
 const fs = require('fs')
 
-
+//handling the saving of the image
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/')
   },
   filename: (req, file, cb)=> {
+    //randomized name for identification
+
     //help at https://stackoverflow.com/questions/54113654/creating-a-random-string-in-cypress-and-passing-this-to-a-cy-command
     var random = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -47,7 +51,8 @@ router.post('/user/register',
   
   const mail = req.body.email;
   const pw = req.body.password;
-
+  
+  //returning found user
   User.findOne({email: mail}, (err, user) => {
     if(user) {
       return res.status(403).json({email: "Email already in use"})
@@ -72,6 +77,8 @@ router.post('/user/login', function(req, res) {
         return res.status(403).json({'msg': "No such email"})
       }
       else {
+
+        //returning token for found user with right password
         bcrypt.compare(req.body.password, user.password, (err, match) => {
           if(err) throw err;
           if (match) {
@@ -90,6 +97,7 @@ router.post('/user/login', function(req, res) {
     })
   })
 
+// handles the returning the right profile
 router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
   var id = req.params.id
 
@@ -108,7 +116,7 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
       }).status(200)
     }
     else if (req.user.email === "admin@admin") {
-
+      //admin profile
       User.findOne({_id: public.id}, (err, user) => {
 
         return res.json({
@@ -135,6 +143,7 @@ router.get('/user/:id', passport.authenticate('jwt', {session: false}), (req,res
 
 })
 
+// cheking if user is logged
 router.get('/private', passport.authenticate('jwt', {session: false}), (req,res) => {
   Public.findOne({id: req.user._id}, (err, user) => {
     if(user) {
@@ -146,6 +155,7 @@ router.get('/private', passport.authenticate('jwt', {session: false}), (req,res)
   })
 })
 
+//saving new users info
 router.post('/public', passport.authenticate('jwt', {session: false}), function(req,res) {
   var body = req.body
   var pid = req.user._id
@@ -167,6 +177,7 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
           userMap.push(user.name)
         });
       
+      //new user cration
       const us = new Public({
         id: pid,
         name: body.name,
@@ -185,6 +196,7 @@ router.post('/public', passport.authenticate('jwt', {session: false}), function(
   })
 })
 
+//adding picture from info page
 router.post('/picture', passport.authenticate('jwt', {session: false}), 
 upload.single("file"), (req,res) => {
   var pid = req.user._id;
@@ -193,12 +205,14 @@ upload.single("file"), (req,res) => {
   Public.findOneAndUpdate({id: pid}, {photo: photo}, (err,user)=> {})
 })
 
+//adding or updatin picture form profile page
 router.post('/picture/update', passport.authenticate('jwt', {session: false}), 
 upload.single("file"), (req,res) => {
   var pid = req.user._id;
   var photo = req.file.filename
   var old;
   
+  //deleting old photo
   Public.findOne({id:pid}, (err,user) => {
     if (user.photo !== undefined) {
       old = "C:/Users/iidav/Documents/AdvWebApp/project/server/uploads/" + user.photo
@@ -216,6 +230,7 @@ upload.single("file"), (req,res) => {
   Public.updateOne({id: pid}, {photo:photo}, (err,user)=> {})
 })
 
+//getting the users photo
 router.get('/photo/:name', passport.authenticate('jwt', {session: false}), (req, res) => {
   
   Public.findOne({name:req.params.name}, (err, user)=> {
@@ -228,6 +243,7 @@ router.get('/photo/:name', passport.authenticate('jwt', {session: false}), (req,
   })
 })
 
+//updation of user information from profilepage 
 router.post('/update/:id', passport.authenticate('jwt', {session: false}),
 //body("password").optional().not().isLowercase().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/, "i"),
 //body("email").optional().trim().isEmail(),
@@ -256,14 +272,16 @@ router.post('/update/:id', passport.authenticate('jwt', {session: false}),
   }
 })
 
+//getting array that the user hasn't liked or disliked
 router.get('/neutral', passport.authenticate('jwt', {session: false}), (req,res) => {
   
   Public.findOne({id: req.user._id}, (err, public) =>{
-    //making the original list
+    
     if(!public){
       res.json({res: "info"})
     }
     else {
+      //making the original list
       var original = public.neutral
       
       if (original.length === 0) {
