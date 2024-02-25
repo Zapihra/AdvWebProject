@@ -48,7 +48,7 @@ the ones that has been used in the course and I have become familiar with them. 
 
 ## Features implemented
 
-Feature |	Max points
+Feature |	Points
 --- | ---
 Basic features with well written documentation	| 25
 Utilization of a frontside framework, such as React	| 5
