@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./css/clonePage.css"
+import {useSwipeable} from "react-swipeable"
 import Header from "./Header";
 
 const ClonePage = () => {
@@ -82,19 +83,28 @@ const ClonePage = () => {
         })
     }
 
+
+    const handlers = useSwipeable({
+        onSwipedLeft: () => disliked(),//disliked
+        onSwipedRight: () => liked(), //liked
+        trackMouse: true
+    })
+
     if (data !== 0) {
         var url = "http://localhost:3000/profile/" + data.name
         return(
             <>
             <Header name={name}/>
-            <div>
+            
+            <div {...handlers} id="handlers">
+            
                 <div>
                     <a href={url}>{data.name}</a> <br/>
                     {data.info} <br/>
                 </div>
     
-                <button id="like" onClick={() => liked()}>like</button>
                 <button id="dislike" onClick={() => disliked()}>dislike</button>
+                <button id="like" onClick={() => liked()}>like</button>
             </div>                
             </>
             )
