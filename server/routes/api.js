@@ -202,7 +202,9 @@ upload.single("file"), (req,res) => {
   var pid = req.user._id;
   var photo = req.file.filename
 
-  Public.findOneAndUpdate({id: pid}, {photo: photo}, (err,user)=> {})
+  Public.findOneAndUpdate({id: pid}, {photo: photo}, (err,user)=> {
+    user
+  })
 })
 
 //adding or updatin picture form profile page
